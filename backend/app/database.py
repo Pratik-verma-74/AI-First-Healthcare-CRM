@@ -22,6 +22,7 @@ IS_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNC
 if DATABASE_URL and IS_SERVERLESS and not DATABASE_URL.startswith("sqlite"):
     try:
         test_url = DATABASE_URL.replace("postgres://", "postgresql://", 1) if DATABASE_URL.startswith("postgres://") else DATABASE_URL
+        # pyrefly: ignore [missing-import]
         from sqlalchemy import text
         test_engine = create_engine(test_url, connect_args={"connect_timeout": 3})
         with test_engine.connect() as conn:

@@ -2,7 +2,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base, SessionLocal
-from app.routers import hcp_router, interaction_router, chat_router
+from app.routers import hcp_router, interaction_router, chat_router, analytics_router
 from app.seed_data import seed_initial_data
 
 logging.basicConfig(level=logging.INFO)
@@ -28,11 +28,13 @@ app.add_middleware(
 app.include_router(chat_router)
 app.include_router(interaction_router)
 app.include_router(hcp_router)
+app.include_router(analytics_router)
 
 # Include Routers with /api prefix (For Vercel Serverless Function Routing)
 app.include_router(chat_router, prefix="/api")
 app.include_router(interaction_router, prefix="/api")
 app.include_router(hcp_router, prefix="/api")
+app.include_router(analytics_router, prefix="/api")
 
 
 

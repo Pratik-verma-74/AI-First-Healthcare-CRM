@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, Sun, Moon, RefreshCw, Activity } from 'lucide-react';
-import { useDispatch } from 'react-redux';
-import { resetForm } from '../../store/interactionSlice';
+import { ShieldCheck, Sun, Moon, RefreshCw, Activity, BarChart3, MessageSquare } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { resetForm, setActiveTab } from '../../store/interactionSlice';
 import { clearMessages } from '../../store/chatSlice';
 import { clearToolHistory } from '../../store/toolExecutionSlice';
 import toast from 'react-hot-toast';
@@ -9,6 +10,7 @@ import toast from 'react-hot-toast';
 export const Header: React.FC = () => {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const dispatch = useDispatch();
+  const activeTab = useSelector((state: RootState) => state.interaction.activeTab);
 
   useEffect(() => {
     document.body.className = `theme-${theme}`;
@@ -69,6 +71,59 @@ export const Header: React.FC = () => {
             HCP Interaction Module <span style={{ color: 'var(--accent-primary)' }}>• Read-Only Form & AI Assistant</span>
           </p>
         </div>
+      </div>
+
+      {/* Tab Switcher (Interaction Log vs Analytics Dashboard) */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0.25rem',
+        borderRadius: '999px',
+        backgroundColor: 'var(--bg-surface-secondary)',
+        border: '1px solid var(--border-color)',
+        gap: '0.25rem'
+      }}>
+        <button
+          onClick={() => dispatch(setActiveTab('interaction'))}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.45rem',
+            padding: '0.45rem 1rem',
+            borderRadius: '999px',
+            backgroundColor: activeTab === 'interaction' ? 'var(--accent-primary)' : 'transparent',
+            color: activeTab === 'interaction' ? '#ffffff' : 'var(--text-secondary)',
+            border: 'none',
+            fontSize: '0.82rem',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'var(--transition-fast)'
+          }}
+        >
+          <MessageSquare size={15} />
+          <span>HCP Interaction Log</span>
+        </button>
+
+        <button
+          onClick={() => dispatch(setActiveTab('analytics'))}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.45rem',
+            padding: '0.45rem 1rem',
+            borderRadius: '999px',
+            backgroundColor: activeTab === 'analytics' ? 'var(--accent-primary)' : 'transparent',
+            color: activeTab === 'analytics' ? '#ffffff' : 'var(--text-secondary)',
+            border: 'none',
+            fontSize: '0.82rem',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'var(--transition-fast)'
+          }}
+        >
+          <BarChart3 size={15} />
+          <span>Analytics Dashboard</span>
+        </button>
       </div>
 
       {/* Engine Status Pill */}

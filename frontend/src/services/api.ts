@@ -53,6 +53,16 @@ export interface ChatResponseDTO {
   saved_interaction_id?: number;
 }
 
+export interface AnalyticsDataDTO {
+  total_interactions: number;
+  total_hcps: number;
+  total_follow_ups_pending: number;
+  sentiment_breakdown: { name: string; value: number; color: string }[];
+  samples_distributed: { product: string; quantity: number }[];
+  interaction_types: { name: string; count: number }[];
+  top_specialties: { name: string; count: number }[];
+}
+
 export const crmApiService = {
   async sendChatMessage(payload: ChatRequestDTO): Promise<ChatResponseDTO> {
     const response = await apiClient.post<ChatResponseDTO>('/chat', payload);
@@ -91,6 +101,11 @@ export const crmApiService = {
 
   async deleteInteraction(id: number) {
     const response = await apiClient.delete(`/interaction/${id}`);
+    return response.data;
+  },
+
+  async getAnalytics(): Promise<AnalyticsDataDTO> {
+    const response = await apiClient.get<AnalyticsDataDTO>('/analytics');
     return response.data;
   }
 };

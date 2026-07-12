@@ -5,6 +5,7 @@ interface InteractionState {
   currentFormData: FormStateDTO;
   interactionList: any[];
   activeInteractionId: number | null;
+  activeTab: 'interaction' | 'analytics';
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
@@ -30,6 +31,7 @@ const initialState: InteractionState = {
   currentFormData: initialFormState,
   interactionList: [],
   activeInteractionId: null,
+  activeTab: 'interaction',
   status: 'idle',
   error: null,
 };
@@ -56,6 +58,9 @@ export const interactionSlice = createSlice({
     },
     setActiveInteractionId: (state, action: PayloadAction<number | null>) => {
       state.activeInteractionId = action.payload;
+    },
+    setActiveTab: (state, action: PayloadAction<'interaction' | 'analytics'>) => {
+      state.activeTab = action.payload;
     }
   },
 });
@@ -65,7 +70,8 @@ export const {
   resetForm,
   updateFormField,
   setInteractionList,
-  setActiveInteractionId
+  setActiveInteractionId,
+  setActiveTab
 } = interactionSlice.actions;
 
 export default interactionSlice.reducer;
