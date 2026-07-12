@@ -1,0 +1,186 @@
+:root {
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+/* ================= DARK MODE TOKENS (Default / Primary) ================= */
+.theme-dark {
+  --bg-app: #090b10;
+  --bg-surface: #11151f;
+  --bg-surface-secondary: #181d2b;
+  --bg-surface-tertiary: #22293a;
+  --bg-glass: rgba(17, 21, 31, 0.75);
+  
+  --text-primary: #f0f3f9;
+  --text-secondary: #9aa4b8;
+  --text-tertiary: #647087;
+  
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
+  --border-focus: #3b82f6;
+  
+  --accent-primary: #3b82f6;
+  --accent-primary-hover: #2563eb;
+  --accent-primary-glow: rgba(59, 130, 246, 0.25);
+  
+  --accent-success: #10b981;
+  --accent-success-glow: rgba(16, 185, 129, 0.2);
+  
+  --accent-warning: #f59e0b;
+  --accent-warning-glow: rgba(245, 158, 11, 0.2);
+  
+  --accent-purple: #8b5cf6;
+  --accent-purple-glow: rgba(139, 92, 246, 0.25);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+
+/* ================= LIGHT MODE TOKENS ================= */
+.theme-light {
+  --bg-app: #f4f7fc;
+  --bg-surface: #ffffff;
+  --bg-surface-secondary: #edf1f8;
+  --bg-surface-tertiary: #dfe6f2;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  
+  --border-color: rgba(15, 23, 42, 0.09);
+  --border-hover: rgba(15, 23, 42, 0.2);
+  --border-focus: #2563eb;
+  
+  --accent-primary: #2563eb;
+  --accent-primary-hover: #1d4ed8;
+  --accent-primary-glow: rgba(37, 99, 235, 0.15);
+  
+  --accent-success: #059669;
+  --accent-success-glow: rgba(5, 150, 105, 0.15);
+  
+  --accent-warning: #d97706;
+  --accent-warning-glow: rgba(217, 119, 6, 0.15);
+  
+  --accent-purple: #7c3aed;
+  --accent-purple-glow: rgba(124, 58, 237, 0.15);
+
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 6px 16px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Read-Only Form Styling (Mandatory Requirement) */
+.form-readonly-field {
+  pointer-events: none !important;
+  background-color: var(--bg-surface-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  opacity: 0.96;
+  cursor: default;
+}
+
+.form-readonly-field:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Glassmorphism & Animations */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes bounce-dots {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-6px); }
+}
+
+.typing-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent-primary);
+  animation: bounce-dots 1.4s infinite ease-in-out both;
+}
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+/* Audio Waveform & Microphone Recording Animations */
+@keyframes waveform-bar {
+  0%, 100% { height: 6px; opacity: 0.6; }
+  50% { height: 22px; opacity: 1; transform: scaleY(1.15); }
+}
+
+@keyframes mic-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes field-glow-update {
+  0% {
+    border-color: var(--accent-success) !important;
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.45) !important;
+    transform: scale(1.01);
+  }
+  50% {
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.35) !important;
+    transform: scale(1.01);
+  }
+  100% {
+    border-color: var(--border-color) !important;
+    box-shadow: none !important;
+    transform: scale(1);
+  }
+}
+
+.field-recently-updated {
+  animation: field-glow-update 2.2s ease-out !important;
+}
