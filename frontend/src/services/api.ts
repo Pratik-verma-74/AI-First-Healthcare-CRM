@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-// Base API configuration pointing to FastAPI server
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Base API configuration pointing to FastAPI server (/api on Vercel PROD, localhost on DEV)
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:8000');
+
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,

@@ -24,10 +24,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include Routers
+# Include Routers (Standard / Local)
 app.include_router(chat_router)
 app.include_router(interaction_router)
 app.include_router(hcp_router)
+
+# Include Routers with /api prefix (For Vercel Serverless Function Routing)
+app.include_router(chat_router, prefix="/api")
+app.include_router(interaction_router, prefix="/api")
+app.include_router(hcp_router, prefix="/api")
+
 
 
 @app.on_event("startup")
