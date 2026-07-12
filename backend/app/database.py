@@ -17,6 +17,20 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 # Check if running in Vercel or Serverless environment
 IS_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
 
+# On Vercel / Serverless, check if DATABASE_URL is pointing to an IPv6 direct Supabase hostname (.supabase.co:5432)
+# or verify if PostgreSQL connection can be established without IPv6 crashes ('Cannot assign requested address').
+if DATABASE_URL and IS_SERVERLESS and not DATABASE_URL.startswith("sqlite"):
+    try:
+        test_url = DATABASE_URL.replace("postgres://", "postgresql://", 1) if DATABASE_URL.startswith("postgres://") else DATABASE_URL
+        from sqlalchemy import text
+        test_engine = create_engine(test_url, connect_args={"connect_timeout": 3})
+        with test_engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        logger.info("Successfully verified Supabase PostgreSQL connection from serverless environment.")
+    except Exception as e:
+        logger.warning(f"Could not connect to PostgreSQL from Vercel serverless (likely IPv6 incompatibility: {e}). Automatically switching to writable SQLite fallback (/tmp/local_crm.db).")
+        DATABASE_URL = None  # Clear DATABASE_URL to trigger seamless SQLite fallback below
+
 if not DATABASE_URL:
     if IS_SERVERLESS:
         tmp_db_path = "/tmp/local_crm.db"
